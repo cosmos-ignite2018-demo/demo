@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Vendor styles -->
+    <link rel="stylesheet" href="vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="vendors/bower_components/animate.css/animate.min.css">
+    <link rel="stylesheet" href="vendors/bower_components/jquery.scrollbar/jquery.scrollbar.css">
+    <link rel="stylesheet" href="vendors/bower_components/fullcalendar/dist/fullcalendar.min.css">
+
+    <!-- App styles -->
+    <link rel="stylesheet" href="css/app.min.css">
+    <script src='https://api.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.css' rel='stylesheet' />
+</head>
+
+<body style="background: #055baf">
+    <main class="main">
+        <div class="page-loader">
+            <div class="page-loader__spinner">
+                <svg viewBox="25 25 50 50">
+                    <circle cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+                </svg>
+            </div>
+        </div>
+
+        <header style="background: #F9F9F6" class="header">
+            <div class="navigation-trigger hidden-xl-up" data-ma-action="aside-open" data-ma-target=".sidebar">
+                <div class="navigation-trigger__inner">
+                    <i class="navigation-trigger__line"></i>
+                    <i class="navigation-trigger__line"></i>
+                    <i class="navigation-trigger__line"></i>
+                </div>
+            </div>
+
+            <div class="header__logo hidden-sm-down">
+                <h1><a style="color: black !important" href="index.html">Global</a></h1>
+            </div>
+
+            <ul class="top-nav">
+                <li class="hidden-xl-up"><a href="" data-ma-action="search-open"><i class="zmdi zmdi-search"></i></a></li>
+                <li class="dropdown top-nav__notifications">
+                    <a href="" data-toggle="dropdown">
+                        <img style="width: 80px" src="https://miro.medium.com/max/914/1*yovZnkelJ4W3sSoRk-oQtw.png">
+                    </a>
+                </li>
+            </ul>
+        </header>
+
+        <div class="row no-gutters">
+            <div style="margin-top: 10%;" class="col-sm-12 col-md-4">
+                <div class="col-sm-12 col-md-12">
+                    <div style="margin-left: 2%">
+                        <h3 style="color: lightblue">TOTAL TICKETS SOLD</h3>
+                        <h1 style="color: white"><strong data-bind="text: info().totalCount().toLocaleString()"></strong></h1>
+                        <br>
+                        <br>
+                        <h3 style="color: lightblue">TICKETS SOLD PER SECOND</h3>
+                        <h1 style="color: white"><strong data-bind="text: info().totalCountPerSecond().toLocaleString()"></strong></h1>
+                        <br>
+                        <br>
+                        <h3 style="color: lightblue">PREDICTED SOLD PER MINUTE</h3>
+                        <h1 style="color: white"><strong data-bind="text: info().totalCountPerMinute().toLocaleString()"></strong></h1>
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                </div>
+                <div style="background: #3B5998;" class="col-sm-12 col-md-12">
+                    <br>
+                    <br>
+                    <div style="margin-left: 2%; height: 500px;">
+                        <h3 style="color: lightblue">LATENCY (99th percentile)</h3>
+                        <h1 style="color: white"><strong data-bind="text: info().latency"></strong></h1>
+                        <br>
+                        <br>
+                        <h3 style="color: lightblue">DATABASE SIZE</h3>
+                        <h1 style="color: white"><strong></strong></h1>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 8%" class="col-sm-12 col-md-8">
+                <button style="margin-right: 2%" data-bind="visible: mode() == 'panic' || mode() == 'extreme', click: extremepanic" type="button" class="btn btn-lg btn-danger btn--raised btn--icon-text"><span data-bind="if: mode() == 'extreme'"><i class="zmdi zmdi-check"></i></span></i> EXTREME PANIC MODE</button>
+                <button style="margin-right: 2%" data-bind="click: panic" type="button" class="btn btn-lg btn-danger btn--raised btn--icon-text"><span data-bind="if: mode() == 'panic'"><i class="zmdi zmdi-check"></i></span></i> PANIC MODE</button>
+                <button data-bind="click: calmdown" type="button" class="btn btn-lg btn-success btn--raised btn--icon-text"><span data-bind="if: mode() == 'calm'"><i class="zmdi zmdi-check"></i></span> CALM MODE</button>
+                <br>
+                <br>
+                <div id='map' style='width: 100%; height: 1000px;'></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Older IE warning message -->
+    <!--[if IE]>
+                <div class="ie-warning">
+                    <h1>Warning!!</h1>
+                    <p>You are using an outdated version of Internet Explorer, please upgrade to any of the following web browsers to access this website.</p>
+
+                    <div class="ie-warning__downloads">
+                        <a href="http://www.google.com/chrome">
+                            <img src="img/browsers/chrome.png" alt="">
+                        </a>
+
+                        <a href="https://www.mozilla.org/en-US/firefox/new">
+                            <img src="img/browsers/firefox.png" alt="">
+                        </a>
+
+                        <a href="http://www.opera.com">
+                            <img src="img/browsers/opera.png" alt="">
+                        </a>
+
+                        <a href="https://support.apple.com/downloads/safari">
+                            <img src="img/browsers/safari.png" alt="">
+                        </a>
+
+                        <a href="https://www.microsoft.com/en-us/windows/microsoft-edge">
+                            <img src="img/browsers/edge.png" alt="">
+                        </a>
+
+                        <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
+                            <img src="img/browsers/ie.png" alt="">
+                        </a>
+                    </div>
+                    <p>Sorry for the inconvenience!</p>
+                </div>
+            <![endif]-->
+
+    <!-- Javascript -->
+    <!-- Vendors -->
+    <script src="vendors/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="vendors/bower_components/popper.js/dist/umd/popper.min.js"></script>
+    <script src="vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="vendors/bower_components/jquery.scrollbar/jquery.scrollbar.min.js"></script>
+    <script src="vendors/bower_components/jquery-scrollLock/jquery-scrollLock.min.js"></script>
+    <script src="js/knockout.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+
+    <script src="vendors/bower_components/flot/jquery.flot.js"></script>
+    <script src="vendors/bower_components/flot/jquery.flot.resize.js"></script>
+    <script src="vendors/bower_components/flot.curvedlines/curvedLines.js"></script>
+    <script src="vendors/bower_components/jqvmap/dist/jquery.vmap.min.js"></script>
+    <script src="vendors/bower_components/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+    <script src="vendors/bower_components/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js"></script>
+    <script src="vendors/bower_components/salvattore/dist/salvattore.min.js"></script>
+    <script src="vendors/jquery.sparkline/jquery.sparkline.min.js"></script>
+    <script src="vendors/bower_components/moment/min/moment.min.js"></script>
+    <script src="vendors/bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
+
+    <!-- App functions and actions -->
+    <script src="js/app.min.js"></script>
+    <script src="js/viewmodels/app.viewmodel.js"></script>
+
+    <script>
+        $(document).ready(() => {
+            ko.applyBindings(new AppViewModel());
+        });
+    </script>
+</body>
+
+</html>

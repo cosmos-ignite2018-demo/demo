@@ -1,0 +1,21 @@
+{
+  "name": "cosmos_spanner",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.6.1",
+    "cors": "^2.8.4",
+    "documentdb": "^1.14.5",
+    "express": "^4.16.3",
+    "kubernetes-client": "^6.1.0",
+    "socket.io": "^2.1.1",
+    "timer-stopwatch": "^0.2.0",
+    "uuid": "^3.3.2"
+  }
+}

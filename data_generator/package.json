@@ -1,0 +1,16 @@
+{
+  "name": "data_generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "documentdb": "^1.14.5",
+    "random-name": "^0.1.2",
+    "uuid": "^3.3.2"
+  }
+}

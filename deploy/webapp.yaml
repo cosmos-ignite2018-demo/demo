@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cosmos-dashboard
+  labels:
+    app: cosmos-dashboard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cosmos-dashboard
+  template:
+    metadata:
+      labels:
+        app: cosmos-dashboard
+    spec:
+      containers:
+      - name: cosmos-dashboard
+        image: yaron2/ignite2018-cosmos-dashboard
+        env:
+          - name: HOST
+            value: <COSMOS-URI>
+          - name: AUTH_KEY
+            value: <COSMOS-PRIMARY-KEY>
+          - name: DATABASE_ID
+            value: demo
+          - name: COLLECTION_ID
+            value: events
+      serviceAccountName: cosmos-dashboard
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: cosmos-dashboard
+spec:
+  selector:
+    app: cosmos-dashboard
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  type: LoadBalancer
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cosmos-dashboard
+  namespace: default
+  
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: cosmos-dashboard
+subjects:
+- kind: ServiceAccount
+  name: cosmos-dashboard
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+---

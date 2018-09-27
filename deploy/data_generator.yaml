@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cosmos-ignite-writer
+  labels:
+    app: cosmos-ignite-writer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cosmos-ignite-writer
+  template:
+    metadata:
+      labels:
+        app: cosmos-ignite-writer
+    spec:
+      containers:
+      - name: cosmos-ignite-writer
+        image: yaron2/ignite2018-cosmos-writer
+        env:
+          - name: HOST
+            value: <COSMOS-URI>
+          - name: AUTH_KEY
+            value: <COSMOS-PRIMARY-KEY>
+          - name: DATABASE_ID
+            value: demo
+          - name: COLLECTION_ID
+            value: events
+          - name: REGION
+            value: <REGION>
+      serviceAccountName: cosmos-ignite-writer
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cosmos-ignite-writer
+  namespace: default
+  
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: cosmos-ignite-writer
+subjects:
+- kind: ServiceAccount
+  name: cosmos-ignite-writer
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+---
