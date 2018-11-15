@@ -3,8 +3,8 @@ var TicketPanic = function () {
     var Client = require('kubernetes-client').Client;
     var baseDir;
 
-    async function scaleWriterDeployment(client, replicas) {
-        await client.apis.apps.v1.ns('default').deploy('cosmos-ignite-writer').patch({
+    function scaleWriterDeployment(client, replicas) {
+        client.apis.apps.v1.ns('default').deploy('cosmos-ignite-writer').patch({
             body: {
                 spec: {
                     replicas: replicas
@@ -30,7 +30,7 @@ var TicketPanic = function () {
         fs.readdir(panicDir, (err, files) => {
             files.forEach(file => {
                 var client = createKubeClient(panicDir + '/' + file);
-                await scaleWriterDeployment(client, 4)
+                scaleWriterDeployment(client, 4)
             });
         })
     }
@@ -41,7 +41,7 @@ var TicketPanic = function () {
         fs.readdir(extPanicDir, (err, files) => {
             files.forEach(file => {
                 var client = createKubeClient(extPanicDir + '/' + file);
-                await scaleWriterDeployment(client, 4)
+                scaleWriterDeployment(client, 4)
             });
         })
     }
@@ -52,7 +52,7 @@ var TicketPanic = function () {
         fs.readdir(extPanicDir, (err, files) => {
             files.forEach(file => {
                 var client = createKubeClient(extPanicDir + '/' + file);
-                await scaleWriterDeployment(client, 0)
+                scaleWriterDeployment(client, 0)
             });
         });
     }
